@@ -1,0 +1,24 @@
+{
+  "name": "ai-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "matrix-bot-sdk": "^0.6.6",
+    "ts-node": "^10.9.1",
+    "chalk": "2.4",
+    "dotenv": "8.0",
+    "node-file-dialog": "^1.0.3",
+    "openai": "^3.3.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
