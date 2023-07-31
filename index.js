@@ -3,8 +3,7 @@ import {
     SimpleFsStorageProvider,
     AutojoinRoomsMixin
 } from "matrix-bot-sdk";
-import { run } from './openai.js';
-
+import { handleResponse, startupSequence } from './openai.js';
 
 const homeserverUrl = "https://matrix-client.matrix.org"; // make sure to update this with your url
 const accessToken = "syt_cmhiMQ_ktCeqppZmFCprXOFmOdY_1f8pwW";
@@ -18,26 +17,33 @@ let roomId = "!yidXwcPJbkXvAixVIL:matrix.org";
 
 client.sendMessage(roomId, {
     "msgtype": "m.text",
-    "body": "Hello, I am a helpful AI assistant.",
+    "body": "",
 });
 
 client.on("room.message", (roomId, event) => {
     if (!event["content"]) return;
     const sender = event["sender"];
     const body = event["content"]["body"];
-    console.log(`${sender.replace(":beeper.com", "").replace(":matrix.org")} says ${body}`);
 
     let myId = sender.includes("rhb1");
     if (myId) return;
+    else console.log(sender.replace(":beeper.com", "").replace(":matrix.org"))
 
     processAI(body);
 });
 
 async function processAI(body) {
-    let aiResponse = await run(body);
-    console.log(aiResponse);
+    client.setTyping(roomId, true, 5000);
+    let aiResponse = await handleResponse(body);
+    client.setTyping(roomId, false);
     client.sendMessage(roomId, {
         "msgtype": "m.text",
         "body": aiResponse,
     });
 }
+
+let response = await startupSequence();
+client.sendMessage(roomId, {
+    "msgtype": "m.text",
+    "body": response,
+});
