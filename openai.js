@@ -13,9 +13,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 let model;
-model = "gpt-3.5-turbo-0301"; // try ada while building
-
-
+model = "gpt-3.5-turbo-0301";
 let messages = [];
 
 export async function startupSequence(data) {
@@ -26,8 +24,8 @@ export async function startupSequence(data) {
             model: model,
             temperature: 0.888,
             max_tokens: 1000,
-            frequency_penalty: 0,
-            presence_penalty: 0,
+            frequency_penalty: 1,
+            presence_penalty: 1,
             top_p: 1,
             messages: messages,
         },
@@ -41,9 +39,6 @@ export async function startupSequence(data) {
 }
 
 export async function handleResponse(userPrompt) {
-    if (userPrompt == "quit") {
-        return;
-    }
 
     messages.push({ role: "user", content: userPrompt });
     const response = await openai.createChatCompletion(

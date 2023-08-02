@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
     }
 });
 
-export default async function getDays() {
+export default async function getPreviousDayData() {
     return new Promise(async (resolve, reject) => {
         try {
             // Connect the client to the server
@@ -49,6 +49,8 @@ export async function writeToDb(doc) {
         const collection = client.db(process.env.MONGO_DB).collection(process.env.MONGO_COLLECTION);
         const result = await collection.insertOne(doc);
         console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+    } catch (err) {
+        console.error('Error occurred while writing to DB:', err);
     } finally {
         await client.close();
     }

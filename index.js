@@ -5,7 +5,7 @@ import {
 } from "matrix-bot-sdk";
 import { getFullConversation, handleResponse, startupSequence } from "./openai.js";
 import * as dotenv from "dotenv";
-import getDays, { writeToDb } from "./mongo.js";
+import getPreviousDayData, { writeToDb } from "./mongodb.js";
 import moment from "moment";
 dotenv.config();
 
@@ -18,7 +18,7 @@ AutojoinRoomsMixin.setupOnClient(client);
 
 export async function startupProcess() {
     client.start().then(() => console.log("Client started!"));
-    getDays().then(async (data) => {
+    getPreviousDayData().then(async (data) => {
         let instructions =
             "You are an AI assistent accountability-buddy for your friend Robert's diet and exercise program. His goals are to eat healty, get exercise every day and to track his weight over time. You are going to sending him a text message to start the day! Before you send him the message it is important you have context as to where he is in his current journal. Below are summaries of what you should consider as previous conversations over the last few days. Respond as a life coach would to help him achieve his goals throughout the day. I trust you with this responsibility for Robert. Do your best! Try to keep the first message to a few sentense. He will hold the conversation for some time. Here is the data: \n\n";
         instructions += data;
@@ -31,6 +31,7 @@ export async function startupProcess() {
 }
 
 let roomId = process.env.ROOM_ID;
+// setup room event
 client.on("room.message", async (roomId, event) => {
     if (!event["content"]) return;
     const sender = event["sender"];
@@ -48,10 +49,6 @@ client.on("room.message", async (roomId, event) => {
         body: aiResponse,
     });
 });
-
-async function processAI(body) {
-
-}
 
 // summarize day and update mongo with new document
 export async function dayEndProcess() {
