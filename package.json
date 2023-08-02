@@ -10,13 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "matrix-bot-sdk": "^0.6.6",
-    "ts-node": "^10.9.1",
     "chalk": "2.4",
     "dotenv": "8.0",
+    "matrix-bot-sdk": "^0.6.6",
+    "moment": "^2.29.4",
+    "mongodb": "^5.7.0",
+    "node-cron": "^3.0.2",
     "node-file-dialog": "^1.0.3",
     "openai": "^3.3.0",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "typescript": "^5.1.6"
